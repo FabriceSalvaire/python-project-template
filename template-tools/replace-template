@@ -1,0 +1,40 @@
+#! /bin/bash
+
+####################################################################################################
+
+root_path=`dirname $0`
+root_path=`dirname ${root_path}`
+if [ ${root_path} == '.' ]; then
+  root_path=$PWD
+fi
+
+####################################################################################################
+
+project=$1
+field=$2
+value=$3
+if [ "x${project}" == "x" -o "x${field}" == "x" -o "x$value" == "x"  ]; then
+  program=`basename $0`
+  echo "Usage: ${program} path field value"
+  exit 1
+fi
+
+####################################################################################################
+
+files=`find $root_path -type f -not -wholename '*/.bzr*' -not -name "*~" -not -wholename "*/template-tools*"`
+
+for file_ref in ${files}; do
+  relative_file=${file_ref#${root_path}/}
+  file=${project}/${relative_file}
+  if [ -e ${file} ]; then
+    echo "Replace Template ${relative_file}"
+    cp ${file} ${file}~
+    sed -e "s/@${field}@/${value}/g;" -i ${file}
+  fi
+done
+
+####################################################################################################
+# 
+# End
+# 
+####################################################################################################
