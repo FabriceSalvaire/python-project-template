@@ -26,6 +26,10 @@ for file_ref in ${files}; do
   file=${project}/${relative_file}
   if ! [ -e ${file} ]; then
     echo "Install ${relative_file}"
+    path=`dirname ${file}`
+    if ! [ -e $path ]; then
+      mkdir -p $path
+    fi
     install ${file_ref} ${file}
   fi
 done
