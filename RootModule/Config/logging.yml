@@ -42,7 +42,7 @@ loggers:
 # Programs
 #
 
-  laptop-control-panel:
+  foo:
     level: DEBUG
     #level: INFO
     handlers: [console]
